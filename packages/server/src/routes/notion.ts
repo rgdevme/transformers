@@ -4,8 +4,8 @@ import { getNotionData } from '../services/notion'
 const notionRoute = Router()
 
 notionRoute.route('/notion').get(async (_, res) => {
-	const result = await getNotionData()
-	res.json({ data: result })
+	const data = await getNotionData()
+	res.json(data)
 })
 
 export { notionRoute }
