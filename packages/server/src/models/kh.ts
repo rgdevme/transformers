@@ -1,5 +1,10 @@
 import z from 'zod'
-import { Account, Currency, NotionRecord, type BaseRecord } from './notion'
+import {
+	Account,
+	Currency,
+	TransactionRecord,
+	type BaseRecord
+} from './transaction'
 import dayjs from 'dayjs'
 
 export type KHRecord = z.infer<typeof KHRecord>
@@ -37,7 +42,7 @@ export const KHRecord = z
 		'Összeg devizaneme': z.string().optional(),
 		Közlemény: z.string().optional()
 	})
-	.transform(record => {
+	.transform(async record => {
 		const nR: BaseRecord = {
 			ref: record['Könyvelési számla'],
 			account: Account.KH,
@@ -52,5 +57,5 @@ export const KHRecord = z
 				.filter(s => s?.length)
 				.join(' - ')
 		}
-		return NotionRecord.parse(nR)
+		return TransactionRecord.parseAsync(nR)
 	})

@@ -1,6 +1,11 @@
 import dayjs from 'dayjs'
 import z from 'zod'
-import { Account, Currency, NotionRecord, type BaseRecord } from './notion'
+import {
+	Account,
+	Currency,
+	TransactionRecord,
+	type BaseRecord
+} from './transaction'
 
 export type FacebankRecord = z.input<typeof FacebankRecord>
 export const FacebankRecord = z
@@ -11,11 +16,11 @@ export const FacebankRecord = z
 		amount: z.coerce.number(),
 		balance: z.coerce.number()
 	})
-	.transform(record => {
+	.transform(async record => {
 		const nR: BaseRecord = {
 			...record,
 			account: Account.FACEBANK,
 			currency: Currency.USD
 		}
-		return NotionRecord.parse(nR)
+		return TransactionRecord.parseAsync(nR)
 	})

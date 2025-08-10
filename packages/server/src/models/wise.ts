@@ -1,5 +1,5 @@
 import z from 'zod'
-import { Account, NotionRecord, type BaseRecord } from './notion'
+import { Account, TransactionRecord, type BaseRecord } from './transaction'
 import dayjs from 'dayjs'
 
 export type WiseRecord = z.infer<typeof WiseRecord>
@@ -29,7 +29,7 @@ export const WiseRecord = z
 		'Total fees': z.string().optional(),
 		'Exchange To Amount': z.string().optional()
 	})
-	.transform(record => {
+	.transform(async record => {
 		const nR: BaseRecord = {
 			ref: record['TransferWise ID'],
 			account: Account.WISE,
@@ -38,5 +38,5 @@ export const WiseRecord = z
 			date: record.Date,
 			description: record.Description
 		}
-		return NotionRecord.parse(nR)
+		return TransactionRecord.parseAsync(nR)
 	})
