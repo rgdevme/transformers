@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 
 import '@mantine/core/styles.css'
-import './index.css'
 // ‼️ import dropzone styles after core package styles
 import '@mantine/dropzone/styles.css'
 
