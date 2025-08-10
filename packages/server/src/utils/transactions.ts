@@ -1,7 +1,10 @@
 import currency from 'currency.js'
+import fs from 'fs'
+import path from 'path'
 import type { NotionRecord } from '../models/notion'
+import { TransactionRecord } from '../models/transaction'
 
-export const sortFeesLast = (a: NotionRecord, b: NotionRecord) =>
+export const sortFeesLast = (_: NotionRecord, b: NotionRecord) =>
 	b.category === 'fee' ? -1 : 1
 
 export const mergeFeesWithPayments = (
@@ -17,4 +20,22 @@ export const mergeFeesWithPayments = (
 	}
 
 	return transactions
+}
+
+export const handleTransactionsArray = (array: NotionRecord[]) =>
+	array.sort(sortFeesLast).reduce(mergeFeesWithPayments, [])
+
+export const getTransactionsBackup = () => {
+	const filepath = path.resolve(__dirname, '../backups/transactions.json')
+	if (!fs.existsSync(filepath)) return []
+	const file = fs.readFileSync(filepath, 'utf-8')
+	return JSON.parse(file.toString()) as TransactionRecord[]
+}
+
+export const updateTransactionsBackup = (transactions: TransactionRecord[]) => {
+	const filepath = path.resolve(__dirname, '../backups/transactions.json')
+	fs.writeFileSync(filepath, JSON.stringify(transactions, null, 2), {
+		encoding: 'utf-8',
+		flag: 'a'
+	})
 }
