@@ -1,36 +1,15 @@
 import { Group, Text } from '@mantine/core'
-import {
-	Dropzone,
-	type DropzoneProps,
-	type FileWithPath,
-	MIME_TYPES
-} from '@mantine/dropzone'
-import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react'
+import { Dropzone, type DropzoneProps, MIME_TYPES } from '@mantine/dropzone'
+import { IconFileSmile, IconUpload, IconX } from '@tabler/icons-react'
 
-export const Dropper = (props: Partial<DropzoneProps>) => {
-	const handleUpload = async (files: FileWithPath[]) => {
-		const formdata = new FormData()
-		files.forEach(file => formdata.append('csv', file))
-		await fetch('http://localhost:3000/csv/kh', {
-			method: 'POST',
-			// headers: { 'Content-Type': 'multipart/form-data' },
-			body: formdata
-		})
-	}
-
+export const Dropper = (props: DropzoneProps) => {
 	return (
 		<Dropzone
-			onDrop={handleUpload}
-			onReject={files => console.log('rejected files', files)}
 			maxSize={5 * 1024 ** 2}
 			maxFiles={10}
 			accept={[MIME_TYPES.csv, MIME_TYPES.xls, MIME_TYPES.xlsx]}
 			{...props}>
-			<Group
-				justify='center'
-				gap='xl'
-				mih={220}
-				style={{ pointerEvents: 'none' }}>
+			<Group justify='center' gap='xl' style={{ pointerEvents: 'none' }}>
 				<Dropzone.Accept>
 					<IconUpload
 						size={52}
@@ -42,7 +21,7 @@ export const Dropper = (props: Partial<DropzoneProps>) => {
 					<IconX size={52} color='var(--mantine-color-red-6)' stroke={1.5} />
 				</Dropzone.Reject>
 				<Dropzone.Idle>
-					<IconPhoto
+					<IconFileSmile
 						size={52}
 						color='var(--mantine-color-dimmed)'
 						stroke={1.5}
