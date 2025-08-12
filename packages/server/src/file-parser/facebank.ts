@@ -1,5 +1,5 @@
 import { FacebankRecord } from '../models/facebank'
-import { readXlsx } from '../utils/xlsx'
+import { readXlsx } from '../utils'
 
 export const parseFacebankFile = async (file: Express.Multer.File) =>
 	readXlsx(file, 22)
