@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import z from 'zod'
+import { normalizeString } from '../utils'
 
 export type Account = (typeof Account)[keyof typeof Account]
 export const Account = {
@@ -17,29 +18,25 @@ export const Currency = {
 	HUF: 'HUF'
 } as const
 
-export const normalizeString = (string: string) =>
-	string
-		.trim()
-		.toLowerCase()
-		.normalize('NFD')
-		.replace(/[\u0300-\u036f]/g, '')
-		.replace(/&apos;/g, '')
-		.replace(/\s\s+/g, ' ')
-
 export type BaseRecord = z.input<typeof TransactionRecord>
 export type TransactionRecord = z.output<typeof TransactionRecord>
 
 export const TransactionRecord = z.object({
 	ref: z.string(),
 	description: z.string().transform(normalizeString),
-	amount: z.number().transform(n => Math.abs(n)),
+	amount: z.number(),
 	date: z.custom<dayjs.Dayjs>(
 		(day: any) => dayjs(day).isValid(),
 		'Not a valid date'
 	),
-	account: z.enum(Account),
+	account: z.string().default(''),
 	currency: z
 		.string()
 		.refine((s): s is Currency => s in Currency)
-		.transform(s => Currency[normalizeString(s).toUpperCase() as Currency])
+		.transform(s => Currency[normalizeString(s).toUpperCase() as Currency]),
+	rate: z.number().default(1),
+	month: z.string().optional(),
+	category: z.string().optional(),
+	into: z.string().optional(),
+	from: z.string().optional()
 })

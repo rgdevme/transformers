@@ -34,7 +34,7 @@ export const KHRecord = z
 		}),
 		'Könyvelési számla': z.string(),
 		Összeg: z.coerce.number(),
-		'Tranzakció azonosító': z.string().optional(),
+		'Tranzakció azonosító': z.string(),
 		Típus: z.string().optional(),
 		'Könyvelési számla elnevezése': z.string().optional(),
 		'Partner számla': z.string().optional(),
@@ -44,7 +44,7 @@ export const KHRecord = z
 	})
 	.transform(async record => {
 		const nR: BaseRecord = {
-			ref: record['Könyvelési számla'],
+			ref: record['Tranzakció azonosító'],
 			account: Account.KH,
 			amount: record['Összeg'],
 			currency: record['Összeg devizaneme'] ?? Currency.HUF,
