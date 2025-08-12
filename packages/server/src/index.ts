@@ -4,6 +4,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat' // ES 2015
 import express from 'express'
 import { notionRoute } from './routes/notion'
 import { transactionsRoute } from './routes/transactions'
+import { currencyRoute } from './routes/currency'
 
 dayjs.extend(customParseFormat)
 
@@ -13,6 +14,7 @@ const port = 3000
 app.use(cors())
 app.use(notionRoute)
 app.use(transactionsRoute)
+app.use(currencyRoute)
 
 app.get('/', (_, res) => {
 	res.send('Hello World!')
@@ -21,7 +23,6 @@ app.get('/', (_, res) => {
 if (import.meta.env.PROD) {
 	app.listen(port, () => {
 		console.clear()
-		console.log(`${Date.now()}`)
 		console.log(`Example app listening on port ${port}`)
 	})
 }
