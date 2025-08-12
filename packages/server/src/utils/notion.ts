@@ -1,12 +1,5 @@
 import { type PageObjectResponse } from '@notionhq/client'
-
-type NotionProperties = {
-	[key: string]: string | number | boolean | string[] | null
-}
-type FlattenedPage<T extends NotionProperties = NotionProperties> = {
-	id: string
-	url: string
-} & T
+import type { FlattenedPage, NotionProperties } from '../types'
 
 /**
  * Flattens a Notion PageObjectResponse into a simpler key-value object.
@@ -17,7 +10,7 @@ export const flattenNotionPage = <
 	T extends NotionProperties = NotionProperties
 >(
 	page: PageObjectResponse
-): FlattenedPage<T> => {
+) => {
 	const flattened: FlattenedPage = {
 		id: page.id,
 		url: page.url
