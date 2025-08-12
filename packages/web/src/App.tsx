@@ -30,6 +30,11 @@ function App() {
 		await api.post('tsx', formdata)
 	}
 
+	const handleCurrencyUpdate = async () => {
+		const res = await api.post('curr')
+		console.log(res)
+	}
+
 	const handleDropFiles = (files: FileWithPath[]) => {
 		setFiles(p => [
 			...files
@@ -68,14 +73,21 @@ function App() {
 								color='cyan'
 								onClick={updateNotionData}
 								leftSection={<IconRefresh size={18} />}>
-								Update Notion data
+								Refresh notion data
+							</Button>
+							<Button
+								variant='filled'
+								color='cyan'
+								onClick={handleCurrencyUpdate}
+								leftSection={<IconRefresh size={18} />}>
+								Update Currencies
 							</Button>
 							<Button
 								variant='filled'
 								color='green'
 								onClick={handleUpload}
 								leftSection={<IconUpload size={18} />}>
-								Upload to Notion
+								Upload transactions
 							</Button>
 						</ButtonGroup>
 					</Stack>
