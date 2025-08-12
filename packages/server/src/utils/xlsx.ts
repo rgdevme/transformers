@@ -1,5 +1,8 @@
 import * as xlsx from 'xlsx'
 
+/** Read the first sheet of an .xls or .xslx file and return its content as a json.
+ * A range may be provided to indicate the extraction's starting row.
+ */
 export const readXlsx = (file: Express.Multer.File, range?: number) => {
 	const x = xlsx.read(file.buffer)
 	const s = x.SheetNames.at(0)!
